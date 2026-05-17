@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Amharic / Ethiopic script (see Noto Sans Ethiopic in layout) */
+  html.lang-am body {
+    font-family: var(--font-ethiopic), var(--font-inter), system-ui, sans-serif;
+  }
+  html.lang-am .font-heading {
+    font-family: var(--font-ethiopic), var(--font-poppins), system-ui, sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Focus styles for accessibility (WCAG 2.1 AA) */
+:where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
+  outline: 2px solid #1B6B3A;
+  outline-offset: 2px;
+}

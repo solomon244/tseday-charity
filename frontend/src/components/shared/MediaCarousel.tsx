@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ChevronLeft, ChevronRight, Pause, Play, Maximize2, 
-  Video, Image as ImageIcon 
+  Video
 } from "lucide-react";
 import { MediaLightbox } from "./MediaLightbox";
 

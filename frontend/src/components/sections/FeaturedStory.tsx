@@ -39,7 +39,7 @@ export function FeaturedStory() {
                 After displacement, Hana and her children faced days without stable food or school supplies. Through your support, they received emergency nutrition, school materials, and small business coaching. Today, her children are back in class, and Hana now runs a small produce stand that supports her family with dignity.
               </p>
               <p className="mt-4 text-sm font-medium text-tsedey-blue dark:text-tsedey-cyan">
-                "We were seen, supported, and given a chance to stand again."
+                &ldquo;We were seen, supported, and given a chance to stand again.&rdquo;
               </p>
               <button
                 type="button"

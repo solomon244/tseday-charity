@@ -150,7 +150,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                       Donation Frequency
                     </label>
                     <div className="flex space-x-4">
-                      {["one-time", "monthly"].map((freq) => (
+                      {(["one-time", "monthly"] as const).map((freq) => (
                         <button
                           key={freq}
                           type="button"

@@ -50,9 +50,9 @@ export function Impact() {
                   Success Story: From Vulnerability to Resilience
                 </h3>
                 <p className="text-primary-100 mb-4">
-                  "Before Tsedey's support, I struggled to feed my family. 
-                  Through their agriculture training and seed support, 
-                  I now grow enough to sell at market and send my children to school."
+                  &ldquo;Before Tsedey&apos;s support, I struggled to feed my family.
+                  Through their agriculture training and seed support,
+                  I now grow enough to sell at market and send my children to school.&rdquo;
                 </p>
                 <p className="text-primary-200 font-medium">
                   — Aster M., Program Beneficiary, North Shewa

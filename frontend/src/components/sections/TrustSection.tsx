@@ -60,7 +60,7 @@ export function TrustSection() {
           {testimonials.map((testimonial, index) => (
             <AnimatedSection key={testimonial.name} delay={0.2 + index * 0.1}>
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-soft dark:border-gray-700 dark:bg-gray-800">
-                <p className="text-gray-700 dark:text-gray-200">"{testimonial.quote}"</p>
+                <p className="text-gray-700 dark:text-gray-200">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="mt-4">
                   <p className="font-semibold text-tsedey-navy dark:text-white">{testimonial.name}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.location}</p>

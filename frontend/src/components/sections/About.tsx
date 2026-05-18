@@ -3,7 +3,7 @@
 
 import { AnimatedSection } from "../shared/AnimatedSection";
 import { Target, Eye, Award } from "lucide-react";
-import { VISION, MISSION, CORE_VALUES } from "@/lib/constants";
+import { VISION, MISSION } from "@/lib/constants";
 
 const pillars = [
   {

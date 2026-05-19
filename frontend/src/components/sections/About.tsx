@@ -3,7 +3,9 @@
 
 import { AnimatedSection } from "../shared/AnimatedSection";
 import { Target, Eye, Award } from "lucide-react";
-import { VISION, MISSION } from "@/lib/constants";
+import { ABOUT_BACKGROUND, VISION, MISSION } from "@/lib/constants";
+
+const aboutIntro = ABOUT_BACKGROUND.split(". ").slice(0, 2).join(". ") + ".";
 
 const pillars = [
   {
@@ -36,7 +38,7 @@ export function About() {
               Who We Are
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Tseday Charity Association is dedicated to reducing poverty and vulnerability among internally displaced persons, women, and youth in North Shewa.
+              {aboutIntro}
             </p>
           </div>
         </AnimatedSection>

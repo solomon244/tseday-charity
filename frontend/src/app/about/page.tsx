@@ -1,10 +1,21 @@
 // src/app/about/page.tsx
 "use client";
 
-import { Eye, Target, Award, Users, Lightbulb, Rocket, Shield, Heart } from "lucide-react";
+import { Eye, Target, Award, Users, Lightbulb, Rocket, Shield, Heart, Building2, MapPin, FileCheck } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { openDonationModal, openVolunteerModal } from "@/lib/ctaEvents";
+import { ABOUT_BACKGROUND, ORGANIZATION, MISSION, VISION, ORGANIZATIONAL_GOAL, OBJECTIVES } from "@/lib/constants";
+
+const focusAreas = [
+  "Emergency relief",
+  "Livelihood support",
+  "Skills training",
+  "Health & psychosocial services",
+  "Agriculture initiatives",
+  "Peacebuilding",
+  "Employment facilitation",
+];
 
 const values = [
   { icon: Heart, title: "Humanity First", desc: "We prioritize human dignity, compassion, and the well-being of all people.", iconClass: "text-tsedey-red", bgClass: "bg-tsedey-red/10 dark:bg-tsedey-red/20" },
@@ -23,14 +34,77 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[url('/pattern-dots.svg')] opacity-10" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <AnimatedSection>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">About Tseday Charity</h1>
+            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">About {ORGANIZATION.name}</h1>
             <p className="text-xl text-tsedey-cyan max-w-3xl mx-auto">
-              Guided by compassion, driven by action, committed to lasting change in North Shewa.
+              A registered non-profit humanitarian organization serving vulnerable communities across North Shewa and the Amhara Region.
             </p>
           </AnimatedSection>
         </div>
       </section>
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "About" }]} />
+
+      {/* Background */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+            <AnimatedSection>
+              <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-soft dark:border-gray-800 dark:bg-gray-900 md:p-10">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-tsedey-navy/10 dark:bg-tsedey-cyan/20">
+                    <Building2 className="h-6 w-6 text-tsedey-navy dark:text-tsedey-cyan" />
+                  </div>
+                  <h2 className="text-3xl font-heading font-bold text-tsedey-navy dark:text-white">Our Background</h2>
+                </div>
+                <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">{ABOUT_BACKGROUND}</p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.15}>
+              <div className="space-y-6 lg:sticky lg:top-28">
+                <div className="rounded-2xl border border-tsedey-cyan/20 bg-gradient-to-br from-tsedey-navy to-tsedey-blue p-6 text-white shadow-lg">
+                  <h3 className="mb-4 font-heading text-lg font-bold">At a Glance</h3>
+                  <ul className="space-y-4 text-sm">
+                    <li className="flex gap-3">
+                      <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-tsedey-cyan" aria-hidden />
+                      <span>
+                        <span className="font-semibold text-tsedey-cyan">Headquarters</span>
+                        <br />
+                        {ORGANIZATION.headquarters}
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <FileCheck className="mt-0.5 h-5 w-5 shrink-0 text-tsedey-cyan" aria-hidden />
+                      <span>
+                        <span className="font-semibold text-tsedey-cyan">Registered</span>
+                        <br />
+                        {ORGANIZATION.registeredDate}
+                        <br />
+                        <span className="text-white/80">{ORGANIZATION.registrationAuthority}</span>
+                        <br />
+                        <span className="text-white/80">{ORGANIZATION.registrationProclamation}</span>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-soft dark:border-gray-800 dark:bg-gray-900">
+                  <h3 className="mb-4 font-heading text-lg font-bold text-tsedey-navy dark:text-white">What We Do</h3>
+                  <ul className="space-y-2">
+                    {focusAreas.map((area) => (
+                      <li
+                        key={area}
+                        className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-tsedey-orange"
+                      >
+                        {area}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
 
       {/* Vision & Mission */}
       <section className="py-20">
@@ -42,9 +116,7 @@ export default function AboutPage() {
                   <Eye className="w-8 h-8 text-tsedey-blue" />
                   <h2 className="text-2xl font-heading font-bold text-tsedey-navy dark:text-white">Vision</h2>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  A resilient and self-reliant community where vulnerable populations, especially internally displaced persons, women, and youth, have sustainable livelihoods, improved nutrition, and access to essential services.
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{VISION}</p>
               </div>
             </AnimatedSection>
 
@@ -54,9 +126,7 @@ export default function AboutPage() {
                   <Target className="w-8 h-8 text-tsedey-orange" />
                   <h2 className="text-2xl font-heading font-bold text-tsedey-navy dark:text-white">Mission</h2>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  To improve the lives of vulnerable and displaced communities in North Shewa by delivering integrated humanitarian assistance, promoting livelihood opportunities, enhancing nutrition through sustainable agriculture, and strengthening community resilience through partnerships, innovation, and inclusive development.
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{MISSION}</p>
               </div>
             </AnimatedSection>
           </div>
@@ -79,9 +149,7 @@ export default function AboutPage() {
                   <Award className="w-6 h-6 text-tsedey-cyan" />
                   <h3 className="text-xl font-heading font-bold text-tsedey-navy dark:text-white">Organizational Goal</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  To reduce poverty and vulnerability among internally displaced persons, women, and youth in North Shewa by enabling sustainable livelihoods, improving skills, and strengthening resilience and well-being.
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{ORGANIZATIONAL_GOAL}</p>
               </div>
             </AnimatedSection>
 
@@ -91,9 +159,7 @@ export default function AboutPage() {
                   <Target className="w-6 h-6 text-tsedey-orange" />
                   <h3 className="text-xl font-heading font-bold text-tsedey-navy dark:text-white">Key Objective</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  To enhance the economic, social, and food security status of vulnerable and internally displaced communities in North Shewa by delivering integrated skills development, livelihood support, enterprise creation, and employment opportunities.
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{OBJECTIVES[0]}</p>
               </div>
             </AnimatedSection>
           </div>

@@ -4,9 +4,16 @@ export const ORGANIZATION = {
     name: "Tseday Charity Association",
     tagline: "Humanity First",
     location: "North Shewa, Ethiopia",
+    headquarters: "Debre Birhan, Ethiopia",
+    registeredDate: "July 17, 2024",
+    registrationAuthority: "Amhara National Regional State Justice Bureau",
+    registrationProclamation: "Proclamation No. 194/2004",
     email: "info@tsedeycharity.org",
     phone: "+251 XXX XXX XXX",
   };
+
+  export const ABOUT_BACKGROUND =
+    "Tseday Charity Association is a non-governmental and non-profit humanitarian organization established in Debre Birhan, Ethiopia, and officially registered on July 17, 2024, under the Amhara National Regional State Justice Bureau pursuant to Proclamation No. 194/2004. The association was founded to improve the livelihoods of vulnerable communities in North Shewa affected by civil conflict, displacement, poverty, and irregular migration. Through integrated humanitarian and development interventions, Tseday Charity Association provides emergency relief, livelihood support, skills training, health and psychosocial services, agriculture initiatives, peacebuilding activities, and employment facilitation for internally displaced persons (IDPs), women, youth, and disadvantaged households. The organization works closely with local communities, government institutions, industries, and humanitarian partners to promote resilience, dignity, and sustainable self-reliance among vulnerable populations in the Amhara Region.";
   
   export const VISION = "A resilient and self-reliant community where vulnerable populations, especially internally displaced persons, women, and youth, have sustainable livelihoods, improved nutrition, and access to essential services.";
   

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { verifyAdminSessionToken } from "@/lib/adminAuth";
 import { AdminLoginForm } from "./AdminLoginForm";
@@ -15,6 +16,14 @@ export default function AdminPage() {
   const token = cookies().get("admin_session")?.value;
   const ok = verifyAdminSessionToken(token);
   if (!ok) return <AdminLoginForm />;
-  return <AdminConsole />;
+  return (
+    <Suspense
+      fallback={
+        <div className="py-16 text-center text-sm text-gray-600 dark:text-gray-300">Loading admin...</div>
+      }
+    >
+      <AdminConsole />
+    </Suspense>
+  );
 }
 

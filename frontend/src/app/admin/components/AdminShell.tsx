@@ -10,6 +10,8 @@ import {
   MessageSquare,
   RefreshCw,
   Users,
+  Newspaper,
+  BookOpen,
 } from "lucide-react";
 import type { AdminTab } from "@/lib/adminTypes";
 
@@ -19,6 +21,8 @@ const TABS: { id: AdminTab; label: string; icon: typeof Users }[] = [
   { id: "contacts", label: "Contact", icon: MessageSquare },
   { id: "donations", label: "Donations", icon: Heart },
   { id: "newsletter", label: "Newsletter", icon: Mail },
+  { id: "news", label: "News & Updates", icon: Newspaper },
+  { id: "stories", label: "Impact Stories", icon: BookOpen },
 ];
 
 type AdminShellProps = {
@@ -51,7 +55,7 @@ export function AdminShell({
             Admin dashboard
           </h1>
           <p className="text-sm text-gray-600 dark:text-gray-300">
-            Manage volunteers, inquiries, donations, and newsletter subscribers.
+            Manage volunteers, inquiries, donations, newsletter, news, and impact stories.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">

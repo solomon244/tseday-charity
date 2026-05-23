@@ -2,9 +2,10 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Clock } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { FeedbackMessageCard } from "@/components/shared/FeedbackMessageCard";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "", type: "general" });
@@ -99,10 +100,20 @@ export default function ContactPage() {
             <AnimatedSection delay={0.2}>
               <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-soft">
                 {isSubmitted ? (
-                  <div className="text-center py-12">
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h3 className="text-2xl font-heading font-bold text-tsedey-navy dark:text-white mb-2">Message Sent!</h3>
-                    <p className="text-gray-600 dark:text-gray-300">Thank you for reaching out. We will get back to you within 24 hours.</p>
+                  <div className="py-10 sm:py-12">
+                    <FeedbackMessageCard
+                      variant="success"
+                      title="Message sent!"
+                      description="Thank you for reaching out. Our team will respond within 24 hours on business days."
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setIsSubmitted(false)}
+                        className="mx-auto block rounded-xl border border-gray-200 px-6 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
+                      >
+                        Send another message
+                      </button>
+                    </FeedbackMessageCard>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
@@ -135,9 +146,7 @@ export default function ContactPage() {
                       <textarea id="contact-message" name="message" rows={4} value={formData.message} onChange={handleChange} required className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-tsedey-cyan focus:border-transparent transition-all resize-none" placeholder="Tell us more about your inquiry..." />
                     </div>
                     {submitError ? (
-                      <p className="text-sm text-red-600 dark:text-red-400" role="alert">
-                        {submitError}
-                      </p>
+                      <FeedbackMessageCard variant="error" title="Could not send message" description={submitError} compact />
                     ) : null}
                     <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-tsedey-navy to-tsedey-blue text-white px-8 py-4 rounded-2xl font-bold hover:shadow-lg transition-all disabled:opacity-50">
                       {isSubmitting ? <span>Sending...</span> : <><span>Send Message</span><Send className="w-5 h-5" /></>}

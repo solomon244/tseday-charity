@@ -2,15 +2,23 @@
 "use client";
 
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { 
-  Sprout, Briefcase, Heart, GraduationCap, 
-  Home, Droplets, ArrowRight 
+import {
+  Sprout,
+  Briefcase,
+  Heart,
+  GraduationCap,
+  Home,
+  Droplets,
+  ShieldCheck,
+  Handshake,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { useLang } from "@/components/layout/LangProvider";
 
 const programs = [
   {
+    hash: "agriculture",
     icon: Sprout,
     title: "Sustainable Agriculture",
     desc: "Families increase harvests through climate-smart farming training, seeds, and community-led support systems.",
@@ -18,6 +26,7 @@ const programs = [
     bgClass: "bg-tsedey-cyan/10 dark:bg-tsedey-cyan/20",
   },
   {
+    hash: "livelihoods",
     icon: Briefcase,
     title: "Livelihood Support",
     desc: "Women and youth build stable incomes through vocational training, mentorship, and micro-enterprise opportunities.",
@@ -25,6 +34,7 @@ const programs = [
     bgClass: "bg-tsedey-blue/10 dark:bg-tsedey-blue/20",
   },
   {
+    hash: "nutrition",
     icon: Heart,
     title: "Nutrition & Health",
     desc: "Mothers and children receive nutrition assistance, referrals, and preventive care that protects vulnerable lives.",
@@ -32,6 +42,7 @@ const programs = [
     bgClass: "bg-tsedey-red/10 dark:bg-tsedey-red/20",
   },
   {
+    hash: "education",
     icon: GraduationCap,
     title: "Education & Training",
     desc: "Students stay in school with essential supplies while youth gain employable skills for long-term self-reliance.",
@@ -39,6 +50,7 @@ const programs = [
     bgClass: "bg-tsedey-yellow/10 dark:bg-tsedey-yellow/20",
   },
   {
+    hash: "idp",
     icon: Home,
     title: "IDP Support",
     desc: "Displaced families receive emergency relief, safe shelter pathways, and recovery services to rebuild with dignity.",
@@ -46,11 +58,28 @@ const programs = [
     bgClass: "bg-tsedey-orange/10 dark:bg-tsedey-orange/20",
   },
   {
+    hash: "wash",
     icon: Droplets,
     title: "WASH",
     desc: "Communities gain cleaner water access, improved sanitation, and hygiene training that reduces preventable disease.",
     iconClass: "text-tsedey-navy dark:text-tsedey-cyan",
     bgClass: "bg-tsedey-navy/10 dark:bg-tsedey-navy/20",
+  },
+  {
+    hash: "gender-protection",
+    icon: ShieldCheck,
+    title: "Gender Protection",
+    desc: "Women, girls, and vulnerable groups receive safeguarding support, awareness, and referral pathways to essential services.",
+    iconClass: "text-tsedey-red",
+    bgClass: "bg-tsedey-red/10 dark:bg-tsedey-red/20",
+  },
+  {
+    hash: "peace-building",
+    icon: Handshake,
+    title: "Peace Building",
+    desc: "Community dialogue, reconciliation, and peace education strengthen social cohesion in conflict-affected areas.",
+    iconClass: "text-tsedey-blue",
+    bgClass: "bg-tsedey-blue/10 dark:bg-tsedey-blue/20",
   },
 ];
 
@@ -76,7 +105,7 @@ export function ProgramHighlights() {
           {programs.map((prog, i) => (
             <AnimatedSection key={i} delay={i * 0.1}>
               <Link
-                href={programsHref}
+                href={`${programsHref}#${prog.hash}`}
                 aria-label={`Learn more about ${prog.title}`}
                 className="group block h-full rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-tsedey-cyan/30 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
               >

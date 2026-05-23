@@ -32,6 +32,42 @@
   @apply bg-gray-400 dark:bg-gray-500;
 }
 
+@keyframes hero-slide-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes partner-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-partner-marquee {
+  animation: partner-marquee 45s linear infinite;
+  width: max-content;
+}
+
+.animate-partner-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-partner-marquee {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
 /* Focus styles for accessibility (WCAG 2.1 AA) */
 :where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
   outline: 2px solid #1B6B3A;

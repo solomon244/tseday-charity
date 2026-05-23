@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Heart, ChevronDown, Sprout, Briefcase, GraduationCap, Home, Droplets } from "lucide-react";
+import { Menu, X, Heart, ChevronDown, Sprout, Briefcase, GraduationCap, Home, Droplets, ShieldCheck, Handshake } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
 import { DonationModal } from "@/components/shared/DonationModal";
@@ -24,6 +24,8 @@ const programsDropdown = [
   { href: "/programs#education", label: "Education & Training", description: "School access and practical skills development.", icon: GraduationCap },
   { href: "/programs#idp", label: "IDP Support", description: "Relief and stabilization services for displaced families.", icon: Home },
   { href: "/programs#wash", label: "Water & Sanitation", description: "Safe water and hygiene systems in communities.", icon: Droplets },
+  { href: "/programs#gender-protection", label: "Gender Protection", description: "Safety, rights, and support for women, girls, and vulnerable groups.", icon: ShieldCheck },
+  { href: "/programs#peace-building", label: "Peace Building", description: "Dialogue, reconciliation, and social cohesion in conflict-affected communities.", icon: Handshake },
 ];
 
 function LangToggleFallback({ overlay }: { overlay?: boolean }) {
@@ -35,13 +37,14 @@ function LangToggleFallback({ overlay }: { overlay?: boolean }) {
   );
 }
 
-function navOverDarkHero(scrolled: boolean, pathname: string) {
-  if (scrolled) return false;
-  if (pathname === "/") return true;
-  if (pathname.startsWith("/about")) return true;
-  if (pathname.startsWith("/programs")) return true;
-  if (pathname.startsWith("/contact")) return true;
-  return false;
+/** Pages that always use the solid nav bar (readable on any background). */
+function usesSolidNav(pathname: string) {
+  return (
+    pathname === "/" ||
+    pathname.startsWith("/about") ||
+    pathname.startsWith("/programs") ||
+    pathname.startsWith("/contact")
+  );
 }
 
 export function Navbar() {
@@ -81,8 +84,9 @@ export function Navbar() {
   // Close mobile menu when clicking a link
   const handleNavClick = () => setIsOpen(false);
 
-  /** Transparent bar over dark hero sections — light theme needs light nav chrome */
-  const overlay = navOverDarkHero(scrolled, pathname);
+  const isHome = pathname === "/";
+  const solidBar = scrolled || usesSolidNav(pathname);
+  const overlay = !solidBar;
   const navItemClass = overlay
     ? "text-white/90 hover:text-white hover:bg-white/10 dark:text-white/90 dark:hover:text-white dark:hover:bg-white/10"
     : "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400";
@@ -95,10 +99,10 @@ export function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg"
+          solidBar
+            ? "border-b border-gray-200/90 bg-white/98 shadow-md backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/98"
             : "bg-transparent"
-        }`}
+        } ${isHome && !scrolled ? "border-b-2 border-tsedey-cyan/40" : ""}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">

@@ -2,7 +2,19 @@
 "use client";
 
 import Link from "next/link";
-import { Sprout, Briefcase, Heart, GraduationCap, Home, Droplets, TrendingUp, Users, ArrowRight } from "lucide-react";
+import {
+  Sprout,
+  Briefcase,
+  Heart,
+  GraduationCap,
+  Home,
+  Droplets,
+  ShieldCheck,
+  Handshake,
+  TrendingUp,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { openDonationModal } from "@/lib/ctaEvents";
@@ -15,6 +27,26 @@ const programs = [
   { id: "education", icon: GraduationCap, title: "Education & Skills Training", desc: "Providing educational support, literacy programs, and vocational skills training to empower women and youth for sustainable livelihoods.", impact: "800+ students supported", iconClass: "text-tsedey-yellow", bgClass: "bg-tsedey-yellow/10 dark:bg-tsedey-yellow/20" },
   { id: "idp", icon: Home, title: "IDP Support Services", desc: "Delivering integrated humanitarian assistance including shelter, WASH, protection, and livelihood support to internally displaced persons.", impact: "5,000+ IDPs assisted", iconClass: "text-tsedey-orange", bgClass: "bg-tsedey-orange/10 dark:bg-tsedey-orange/20" },
   { id: "wash", icon: Droplets, title: "Water, Sanitation & Hygiene", desc: "Ensuring access to clean water, improved sanitation facilities, and hygiene promotion to prevent disease and improve community health.", impact: "20+ water points established", iconClass: "text-tsedey-navy dark:text-tsedey-cyan", bgClass: "bg-tsedey-navy/10 dark:bg-tsedey-navy/20" },
+  {
+    id: "gender-protection",
+    slug: "gender-protection",
+    icon: ShieldCheck,
+    title: "Gender Protection",
+    desc: "Promoting the safety, dignity, and rights of women, girls, and vulnerable groups through prevention, response, and referral to protection services.",
+    impact: "1,200+ people reached with protection messaging",
+    iconClass: "text-tsedey-red",
+    bgClass: "bg-tsedey-red/10 dark:bg-tsedey-red/20",
+  },
+  {
+    id: "peace-building",
+    slug: "peace-building",
+    icon: Handshake,
+    title: "Peace Building",
+    desc: "Strengthening social cohesion through community dialogue, conflict sensitivity training, and reconciliation activities in displacement-affected areas.",
+    impact: "40+ community peace dialogues facilitated",
+    iconClass: "text-tsedey-blue",
+    bgClass: "bg-tsedey-blue/10 dark:bg-tsedey-blue/20",
+  },
 ];
 
 const approach = [

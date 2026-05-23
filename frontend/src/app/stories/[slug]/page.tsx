@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
-import { successStories } from "@/lib/content";
+import { fetchPublishedImpactStories, fetchPublishedImpactStoryBySlug } from "@/lib/fetchImpactStories";
 import { getLang } from "@/lib/i18n";
 
 type PageProps = {
@@ -10,12 +10,13 @@ type PageProps = {
   searchParams?: { lang?: string };
 };
 
-export function generateStaticParams() {
-  return successStories.map((story) => ({ slug: story.slug }));
+export async function generateStaticParams() {
+  const stories = await fetchPublishedImpactStories();
+  return stories.map((story) => ({ slug: story.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const story = successStories.find((item) => item.slug === params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const story = await fetchPublishedImpactStoryBySlug(params.slug);
   if (!story) return {};
   return {
     title: story.title,
@@ -24,8 +25,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function StoryDetailPage({ params, searchParams }: PageProps) {
-  const story = successStories.find((item) => item.slug === params.slug);
+export default async function StoryDetailPage({ params, searchParams }: PageProps) {
+  const story = await fetchPublishedImpactStoryBySlug(params.slug);
   if (!story) notFound();
   const isAm = getLang(searchParams?.lang) === "am";
 

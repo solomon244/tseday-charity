@@ -4,7 +4,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { X, CheckCircle, HandHelping } from "lucide-react";
+import { X, HandHelping } from "lucide-react";
+import { FeedbackMessageCard } from "@/components/shared/FeedbackMessageCard";
 import { useLang } from "@/components/layout/LangProvider";
 
 interface VolunteerModalProps {
@@ -94,49 +95,49 @@ export function VolunteerModal({ isOpen, onClose }: VolunteerModalProps) {
               </div>
 
               {isSubmitted ? (
-                <div className="p-8 text-center">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2">
-                    Application Received!
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Thank you for your interest. Save your reference ID to check status anytime.
-                  </p>
-                  {refId ? (
-                    <p className="mt-4 rounded-xl bg-gray-50 px-4 py-3 font-mono text-lg font-bold text-tsedey-navy dark:bg-gray-800 dark:text-white">
-                      {refId}
-                    </p>
-                  ) : null}
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                    <Link
-                      href={
-                        refId
-                          ? withLang(`/volunteer/status?ref=${encodeURIComponent(refId)}`)
-                          : withLang("/volunteer/status")
-                      }
-                      className="inline-flex justify-center rounded-xl bg-primary-600 px-6 py-3 font-semibold text-white hover:bg-primary-700"
-                    >
-                      Track application status
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsSubmitted(false);
-                        setRefId(null);
-                        onClose();
-                      }}
-                      className="inline-flex justify-center rounded-xl border border-gray-200 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800"
-                    >
-                      Close
-                    </button>
-                  </div>
+                <div className="p-8 sm:p-10">
+                  <FeedbackMessageCard
+                    variant="success"
+                    title="Application received!"
+                    description="Thank you for volunteering. Save your reference ID to track your application anytime."
+                  >
+                    {refId ? (
+                      <div className="rounded-xl border border-gray-200 bg-white px-4 py-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Reference ID</p>
+                        <p className="mt-1 font-mono text-xl font-bold tracking-wide text-tsedey-navy dark:text-white">
+                          {refId}
+                        </p>
+                      </div>
+                    ) : null}
+                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+                      <Link
+                        href={
+                          refId
+                            ? withLang(`/volunteer/status?ref=${encodeURIComponent(refId)}`)
+                            : withLang("/volunteer/status")
+                        }
+                        className="inline-flex justify-center rounded-xl bg-gradient-to-r from-tsedey-navy to-tsedey-blue px-6 py-3 text-sm font-bold text-white shadow-md transition hover:opacity-95"
+                      >
+                        Track application status
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsSubmitted(false);
+                          setRefId(null);
+                          onClose();
+                        }}
+                        className="inline-flex justify-center rounded-xl border border-gray-200 px-6 py-3 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </FeedbackMessageCard>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
                   {submitError ? (
-                    <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/40 dark:text-red-200">
-                      {submitError}
-                    </p>
+                    <FeedbackMessageCard variant="error" title="Submission failed" description={submitError} compact />
                   ) : null}
                   <div className="grid grid-cols-2 gap-4">
                     <div>

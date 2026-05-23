@@ -60,28 +60,6 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="mb-12 rounded-2xl bg-gradient-to-r from-tsedey-red to-tsedey-orange p-8 text-white shadow-lg">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <h3 className="font-heading text-2xl font-bold">Make a Difference Today</h3>
-              <p className="mt-2 text-sm text-white/90">
-                Your gift can help feed families, keep children in school, and restore dignity across North Shewa.
-              </p>
-            </div>
-            <Link
-              href={localizeHref("/contact")}
-              className="rounded-xl bg-white px-6 py-3 font-bold text-tsedey-red transition-colors hover:bg-gray-100"
-            >
-              Donate Now
-            </Link>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold">
-            <span className="rounded-full bg-white/20 px-3 py-1">Registered in Ethiopia</span>
-            <span className="rounded-full bg-white/20 px-3 py-1">Transparent Community Reporting</span>
-            <span className="rounded-full bg-white/20 px-3 py-1">Secure Donation Process</span>
-          </div>
-        </div>
-
         {/* Newsletter Section */}
         <div className="mb-12 pb-8 border-b border-gray-800">
           <NewsletterSignup />

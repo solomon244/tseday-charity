@@ -17,6 +17,20 @@ import {
 } from "@/lib/donationStore";
 import { sendVolunteerApprovedEmail } from "@/lib/email/volunteerApproved";
 import { listNewsletterSubscribers } from "@/lib/newsletterStore";
+import {
+  createImpactStory,
+  deleteImpactStory,
+  listImpactStories,
+  updateImpactStory,
+  type ImpactStoryInput,
+} from "@/lib/impactStoryStore";
+import {
+  createNewsArticle,
+  deleteNewsArticle,
+  listNewsArticles,
+  updateNewsArticle,
+  type NewsArticleInput,
+} from "@/lib/newsStore";
 import { parsePositiveInt } from "@/lib/listQuery";
 import { findByRef, listApplications, updateStatus } from "@/lib/volunteerStore";
 import type { VolunteerStatus } from "@/lib/volunteerTypes";
@@ -79,6 +93,25 @@ adminRouter.get("/stats", requireAdmin, async (_req, res) => {
     res.json(stats);
   } catch {
     res.status(500).json({ error: "Could not load stats" });
+  }
+});
+
+adminRouter.get("/recent", requireAdmin, async (_req, res) => {
+  try {
+    const [contacts, donations, volunteers, news] = await Promise.all([
+      listContactMessages({ page: 1, pageSize: 5, status: "new", order: "desc" }),
+      listDonations({ page: 1, pageSize: 5, order: "desc" }),
+      listApplications({ page: 1, pageSize: 5, order: "desc" }),
+      listNewsArticles({ page: 1, pageSize: 5, order: "desc" }),
+    ]);
+    res.json({
+      contacts: contacts.items,
+      donations: donations.items,
+      volunteers: volunteers.items,
+      news: news.items,
+    });
+  } catch {
+    res.status(500).json({ error: "Could not load recent activity" });
   }
 });
 
@@ -185,6 +218,225 @@ adminRouter.patch("/donations", requireAdmin, async (req, res) => {
     res.json({ donation: updated });
   } catch {
     res.status(500).json({ error: "Update failed" });
+  }
+});
+
+function parseNewsBody(body: Record<string, unknown>): NewsArticleInput | null {
+  const slug = String(body.slug ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  const title = String(body.title ?? "").trim();
+  const excerpt = String(body.excerpt ?? "").trim();
+  const date = String(body.date ?? "").trim();
+  const category = String(body.category ?? "").trim();
+  const imageEmoji = String(body.imageEmoji ?? "📰").trim() || "📰";
+  const tags = Array.isArray(body.tags)
+    ? body.tags.map((t) => String(t).trim()).filter(Boolean)
+    : String(body.tags ?? "")
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+  const bodyParagraphs = Array.isArray(body.body)
+    ? body.body.map((p) => String(p).trim()).filter(Boolean)
+    : String(body.body ?? "")
+        .split(/\n\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+
+  if (!slug || !title || !excerpt || !date || !category) return null;
+
+  return {
+    slug,
+    title,
+    excerpt,
+    date,
+    category,
+    tags,
+    imageEmoji,
+    body: bodyParagraphs,
+    published: body.published !== false,
+  };
+}
+
+adminRouter.get("/news", requireAdmin, async (req, res) => {
+  const query = String(req.query.q ?? "").trim();
+  const orderRaw = String(req.query.order ?? "desc").trim();
+  const page = parsePositiveInt(req.query.page, 1);
+  const pageSize = Math.min(parsePositiveInt(req.query.pageSize, 10), 100);
+  const order = orderRaw === "asc" || orderRaw === "desc" ? orderRaw : "desc";
+
+  try {
+    const { items, total } = await listNewsArticles({ query, order, page, pageSize });
+    res.json({ items, total, page, pageSize });
+  } catch {
+    res.status(500).json({ error: "Could not load news articles" });
+  }
+});
+
+adminRouter.post("/news", requireAdmin, async (req, res) => {
+  try {
+    const input = parseNewsBody(req.body as Record<string, unknown>);
+    if (!input) {
+      res.status(400).json({ error: "Invalid article payload" });
+      return;
+    }
+    const article = await createNewsArticle(input);
+    res.status(201).json({ article });
+  } catch (err) {
+    const message = err instanceof Error && err.message.includes("duplicate") ? "Slug already exists" : "Create failed";
+    res.status(500).json({ error: message });
+  }
+});
+
+adminRouter.patch("/news", requireAdmin, async (req, res) => {
+  try {
+    const body = req.body as Record<string, unknown>;
+    const id = String(body.id ?? "").trim();
+    if (!id) {
+      res.status(400).json({ error: "Article id is required" });
+      return;
+    }
+    const input = parseNewsBody(body);
+    if (!input) {
+      res.status(400).json({ error: "Invalid article payload" });
+      return;
+    }
+    if (body.published === false) input.published = false;
+    const article = await updateNewsArticle(id, input);
+    if (!article) {
+      res.status(404).json({ error: "Article not found" });
+      return;
+    }
+    res.json({ article });
+  } catch {
+    res.status(500).json({ error: "Update failed" });
+  }
+});
+
+adminRouter.delete("/news", requireAdmin, async (req, res) => {
+  try {
+    const id = String(req.query.id ?? "").trim();
+    if (!id) {
+      res.status(400).json({ error: "Article id is required" });
+      return;
+    }
+    const ok = await deleteNewsArticle(id);
+    if (!ok) {
+      res.status(404).json({ error: "Article not found" });
+      return;
+    }
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: "Delete failed" });
+  }
+});
+
+function parseImpactStoryBody(body: Record<string, unknown>): ImpactStoryInput | null {
+  const slug = String(body.slug ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  const title = String(body.title ?? "").trim();
+  const summary = String(body.summary ?? "").trim();
+  const beneficiary = String(body.beneficiary ?? "").trim();
+  const location = String(body.location ?? "").trim();
+  const program = String(body.program ?? "").trim();
+  const image = String(body.image ?? "").trim();
+  const outcome = Array.isArray(body.outcome)
+    ? body.outcome.map((o) => String(o).trim()).filter(Boolean)
+    : String(body.outcome ?? "")
+        .split(/\n/)
+        .map((o) => o.trim())
+        .filter(Boolean);
+
+  if (!slug || !title || !summary || !beneficiary || !location || !program || !image) return null;
+
+  return {
+    slug,
+    title,
+    summary,
+    beneficiary,
+    location,
+    program,
+    image,
+    outcome,
+    published: body.published !== false,
+  };
+}
+
+adminRouter.get("/impact-stories", requireAdmin, async (req, res) => {
+  const query = String(req.query.q ?? "").trim();
+  const orderRaw = String(req.query.order ?? "desc").trim();
+  const page = parsePositiveInt(req.query.page, 1);
+  const pageSize = Math.min(parsePositiveInt(req.query.pageSize, 10), 100);
+  const order = orderRaw === "asc" || orderRaw === "desc" ? orderRaw : "desc";
+
+  try {
+    const { items, total } = await listImpactStories({ query, order, page, pageSize });
+    res.json({ items, total, page, pageSize });
+  } catch {
+    res.status(500).json({ error: "Could not load impact stories" });
+  }
+});
+
+adminRouter.post("/impact-stories", requireAdmin, async (req, res) => {
+  try {
+    const input = parseImpactStoryBody(req.body as Record<string, unknown>);
+    if (!input) {
+      res.status(400).json({ error: "Invalid story payload" });
+      return;
+    }
+    const story = await createImpactStory(input);
+    res.status(201).json({ story });
+  } catch (err) {
+    const message = err instanceof Error && err.message.includes("duplicate") ? "Slug already exists" : "Create failed";
+    res.status(500).json({ error: message });
+  }
+});
+
+adminRouter.patch("/impact-stories", requireAdmin, async (req, res) => {
+  try {
+    const body = req.body as Record<string, unknown>;
+    const id = String(body.id ?? "").trim();
+    if (!id) {
+      res.status(400).json({ error: "Story id is required" });
+      return;
+    }
+    const input = parseImpactStoryBody(body);
+    if (!input) {
+      res.status(400).json({ error: "Invalid story payload" });
+      return;
+    }
+    if (body.published === false) input.published = false;
+    const story = await updateImpactStory(id, input);
+    if (!story) {
+      res.status(404).json({ error: "Story not found" });
+      return;
+    }
+    res.json({ story });
+  } catch {
+    res.status(500).json({ error: "Update failed" });
+  }
+});
+
+adminRouter.delete("/impact-stories", requireAdmin, async (req, res) => {
+  try {
+    const id = String(req.query.id ?? "").trim();
+    if (!id) {
+      res.status(400).json({ error: "Story id is required" });
+      return;
+    }
+    const ok = await deleteImpactStory(id);
+    if (!ok) {
+      res.status(404).json({ error: "Story not found" });
+      return;
+    }
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: "Delete failed" });
   }
 });
 

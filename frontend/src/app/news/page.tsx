@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, Search } from "lucide-react";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
-import { newsArticles, newsTagList } from "@/lib/content";
 import { getLang } from "@/lib/i18n";
+import { fetchPublishedNews } from "@/lib/fetchNews";
 
 export const metadata: Metadata = {
   title: "News & Updates",
@@ -15,11 +15,14 @@ type PageProps = {
   searchParams?: { q?: string; tag?: string; lang?: string };
 };
 
-export default function NewsPage({ searchParams }: PageProps) {
+export default async function NewsPage({ searchParams }: PageProps) {
   const lang = getLang(searchParams?.lang);
   const isAm = lang === "am";
   const q = (searchParams?.q ?? "").trim().toLowerCase();
   const tag = (searchParams?.tag ?? "").trim();
+
+  const newsArticles = await fetchPublishedNews();
+  const newsTagList = Array.from(new Set(newsArticles.flatMap((a) => a.tags))).sort();
 
   const filtered = newsArticles.filter((a) => {
     const matchTag = !tag || a.tags.includes(tag);

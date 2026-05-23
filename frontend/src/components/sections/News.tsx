@@ -1,16 +1,28 @@
 // src/components/sections/News.tsx
 "use client";
 
+import { useEffect, useState } from "react";
 import { AnimatedSection } from "../shared/AnimatedSection";
 import { Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { newsArticles } from "@/lib/content";
+import type { NewsArticle } from "@/lib/content";
+import { newsArticles as staticNewsArticles } from "@/lib/content";
 import { useLang } from "@/components/layout/LangProvider";
 import { newsSectionCopy } from "@/lib/siteCopy";
 
 export function News() {
   const { withLang, lang } = useLang();
   const t = newsSectionCopy(lang);
+  const [articles, setArticles] = useState<NewsArticle[]>(staticNewsArticles);
+
+  useEffect(() => {
+    void fetch("/api/news")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { items?: NewsArticle[] } | null) => {
+        if (data?.items?.length) setArticles(data.items.slice(0, 3));
+      })
+      .catch(() => undefined);
+  }, []);
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900">
@@ -35,7 +47,7 @@ export function News() {
         </AnimatedSection>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {newsArticles.map((item, index) => (
+          {articles.map((item, index) => (
             <AnimatedSection key={item.slug} delay={index * 0.1}>
               <Link
                 href={withLang(`/news/${item.slug}`)}

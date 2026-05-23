@@ -9,9 +9,9 @@ import { useLang } from "@/components/layout/LangProvider";
 import { getInvolvedCopy } from "@/lib/siteCopy";
 
 const blocks = [
-  { id: "donate" as const, icon: Heart, featured: true },
-  { id: "volunteer" as const, icon: HandHelping, featured: false },
-  { id: "partner" as const, icon: Share2, featured: false },
+  { id: "donate" as const, icon: Heart, accent: "red" as const },
+  { id: "volunteer" as const, icon: HandHelping, accent: "blue" as const },
+  { id: "partner" as const, icon: Share2, accent: "cyan" as const },
 ];
 
 export function GetInvolved() {
@@ -33,25 +33,36 @@ export function GetInvolved() {
           </div>
         </AnimatedSection>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {blocks.map((block, i) => {
             const item = copy.actions[i];
+            const iconBg =
+              block.accent === "red"
+                ? "bg-tsedey-red/10 dark:bg-tsedey-red/20"
+                : block.accent === "cyan"
+                  ? "bg-tsedey-cyan/10 dark:bg-tsedey-cyan/20"
+                  : "bg-tsedey-blue/10 dark:bg-tsedey-blue/20";
+            const iconColor =
+              block.accent === "red"
+                ? "text-tsedey-red dark:text-tsedey-orange"
+                : block.accent === "cyan"
+                  ? "text-tsedey-cyan"
+                  : "text-tsedey-blue dark:text-tsedey-cyan";
+
             return (
-              <AnimatedSection key={block.id} delay={i * 0.1} className={block.featured ? "md:col-span-2" : ""}>
-                <div className={`group rounded-2xl border p-8 text-center transition-all hover:-translate-y-1 hover:shadow-soft ${
-                  block.featured
-                    ? "border-tsedey-red/20 bg-white text-tsedey-navy shadow-lg dark:border-tsedey-red/30 dark:bg-gray-900 dark:text-white"
-                    : "border-gray-100 bg-tsedey-light dark:border-gray-700 dark:bg-gray-800"
-                }`}>
-                  <div className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full transition-transform group-hover:scale-110 ${
-                    block.featured
-                      ? "bg-tsedey-red/10 dark:bg-tsedey-red/20"
-                      : "bg-tsedey-blue/10 dark:bg-tsedey-cyan/20"
-                  }`}>
-                    <block.icon className={`h-8 w-8 ${block.featured ? "text-tsedey-red dark:text-tsedey-orange" : "text-tsedey-blue dark:text-tsedey-cyan"}`} />
+              <AnimatedSection key={block.id} delay={i * 0.1}>
+                <div className="group flex h-full flex-col rounded-xl border border-gray-100 bg-tsedey-light p-5 text-center transition-all hover:-translate-y-0.5 hover:shadow-soft dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+                  <div
+                    className={`mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full transition-transform group-hover:scale-105 ${iconBg}`}
+                  >
+                    <block.icon className={`h-5 w-5 ${iconColor}`} />
                   </div>
-                  <h3 className={`mb-3 font-heading text-xl font-bold ${block.featured ? "text-tsedey-navy dark:text-white" : "text-tsedey-navy dark:text-white"}`}>{item.title}</h3>
-                  <p className={`mb-6 text-sm leading-relaxed ${block.featured ? "text-gray-600 dark:text-gray-300" : "text-gray-600 dark:text-gray-400"}`}>{item.desc}</p>
+                  <h3 className="mb-2 font-heading text-lg font-bold text-tsedey-navy dark:text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mb-4 flex-1 text-xs leading-relaxed text-gray-600 dark:text-gray-400 sm:text-sm">
+                    {item.desc}
+                  </p>
                   <Link
                     href={contactHref}
                     onClick={(e) => {
@@ -63,14 +74,10 @@ export function GetInvolved() {
                         openVolunteerModal();
                       }
                     }}
-                    className={`inline-flex items-center justify-center space-x-2 font-semibold ${
-                      block.featured
-                        ? "rounded-lg bg-tsedey-navy px-5 py-2 text-white hover:bg-tsedey-blue"
-                        : "text-tsedey-blue hover:underline dark:text-tsedey-cyan"
-                    }`}
+                    className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-tsedey-blue hover:underline dark:text-tsedey-cyan"
                   >
                     <span>{item.cta}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </AnimatedSection>

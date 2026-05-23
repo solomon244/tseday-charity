@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ImpactCharts } from "@/components/sections/ImpactCharts";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
-import { successStories } from "@/lib/content";
 import { getLang } from "@/lib/i18n";
+import { fetchPublishedImpactStories } from "@/lib/fetchImpactStories";
 
 export const metadata: Metadata = {
   title: "Impact Stories",
@@ -12,13 +12,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/impact-stories" },
 };
 
-export default function ImpactStoriesPage({
+export default async function ImpactStoriesPage({
   searchParams,
 }: {
   searchParams?: { lang?: string };
 }) {
   const lang = getLang(searchParams?.lang);
   const isAm = lang === "am";
+  const successStories = await fetchPublishedImpactStories();
 
   return (
     <main className="min-h-screen bg-tsedey-light pb-16 pt-24 dark:bg-gray-950">

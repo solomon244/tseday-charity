@@ -5,6 +5,8 @@ import { adminRouter } from "@/routes/admin";
 import { contactRouter } from "@/routes/contact";
 import { donationsRouter } from "@/routes/donations";
 import { newsletterRouter } from "@/routes/newsletter";
+import { newsRouter } from "@/routes/news";
+import { impactStoriesRouter } from "@/routes/impactStories";
 import { volunteerRouter } from "@/routes/volunteer";
 
 export function createApp() {
@@ -27,6 +29,8 @@ export function createApp() {
   app.use("/api/volunteer", volunteerRouter);
   app.use("/api/contact", contactRouter);
   app.use("/api/newsletter", newsletterRouter);
+  app.use("/api/news", newsRouter);
+  app.use("/api/impact-stories", impactStoriesRouter);
   app.use("/api/donations", donationsRouter);
   app.use("/api/admin", adminRouter);
 

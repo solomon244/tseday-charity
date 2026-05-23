@@ -102,6 +102,44 @@ export const programDetails: ProgramDetail[] = [
       { date: "2026-04-18", title: "Mentorship Network", note: "Local mentors matched with first-time entrepreneurs." },
     ],
   },
+  {
+    slug: "gender-protection",
+    title: "Gender Protection",
+    shortDescription:
+      "Safeguarding women, girls, and vulnerable groups through awareness, prevention, and referral to protection services.",
+    location: "North Shewa, Amhara Region",
+    mapQuery: "North Shewa, Amhara Region, Ethiopia",
+    image: "/gallery/photo2.jpg",
+    goals: [
+      "Raise community awareness on gender-based violence prevention and response.",
+      "Strengthen safe referral pathways for survivors to health and legal support.",
+      "Promote women and girls' participation and leadership in community decisions.",
+    ],
+    updates: [
+      { date: "2026-02-10", title: "Protection Awareness Sessions", note: "Community facilitators trained on GBV prevention messaging." },
+      { date: "2026-03-15", title: "Safe Referral Mapping", note: "Local referral partners aligned for survivor support services." },
+      { date: "2026-04-22", title: "Women's Leadership Forum", note: "IDP and host-community women leaders convened on protection priorities." },
+    ],
+  },
+  {
+    slug: "peace-building",
+    title: "Peace Building",
+    shortDescription:
+      "Building social cohesion through dialogue, reconciliation, and peace education in conflict-affected communities.",
+    location: "North Shewa, Amhara Region",
+    mapQuery: "North Shewa, Amhara Region, Ethiopia",
+    image: "/gallery/hero.jpg",
+    goals: [
+      "Facilitate inclusive community dialogue between displaced and host communities.",
+      "Train local leaders and youth on conflict sensitivity and peaceful dispute resolution.",
+      "Support reconciliation activities that reduce tension and build trust.",
+    ],
+    updates: [
+      { date: "2026-01-20", title: "Peace Dialogue Launch", note: "Multi-stakeholder dialogues began in high-tension kebeles." },
+      { date: "2026-03-01", title: "Youth Peace Ambassadors", note: "Youth cohort trained as peer mediators in schools and communities." },
+      { date: "2026-04-12", title: "Reconciliation Follow-up", note: "Community action plans developed to sustain dialogue outcomes." },
+    ],
+  },
 ];
 
 export interface NewsArticle {
@@ -196,33 +234,70 @@ export const annualReports: AnnualReport[] = [
 export interface Partner {
   id: string;
   name: string;
+  abbr: string;
   type: string;
   description: string;
+  logo?: string;
 }
 
+/** Major institutional partners (homepage slider + partners page). */
 export const partners: Partner[] = [
+  {
+    id: "mastercard",
+    name: "Mastercard",
+    abbr: "MC",
+    type: "Financial Services",
+    logo: "/partners/mastercard.png",
+    description:
+      "Supporting secure digital payments and financial inclusion initiatives that help communities access resources for humanitarian and development programs.",
+  },
+  {
+    id: "north-shewa-zone-communication",
+    name: "Amhara North Shewa Zone Communication",
+    abbr: "NSZC",
+    type: "Government",
+    logo: "/partners/amhara-north-shewa-zone-communication.png",
+    description:
+      "Zonal communication and public engagement supporting coordinated outreach on humanitarian and development programs in North Shewa.",
+  },
   {
     id: "shewa-zonal-admin",
     name: "North Shewa Zonal Administration",
+    abbr: "NSZA",
     type: "Government",
-    description: "Coordination on community priorities, displacement response planning, and local implementation partnerships.",
+    description:
+      "Coordination on community priorities, displacement response planning, and local implementation partnerships.",
+  },
+  {
+    id: "amhara-justice",
+    name: "Amhara Regional Justice Bureau",
+    abbr: "ARJB",
+    type: "Government",
+    description:
+      "Legal registration and oversight under Proclamation No. 194/2004 for accountable NGO operations.",
   },
   {
     id: "district-health",
     name: "District Health Offices",
+    abbr: "DHO",
     type: "Health",
-    description: "Joint outreach on maternal and child nutrition alongside primary care referrals.",
+    description:
+      "Joint outreach on maternal and child nutrition alongside primary care referrals.",
   },
   {
     id: "farmer-coops",
     name: "Farmer Cooperatives",
+    abbr: "FC",
     type: "Community",
-    description: "Market linkage support and peer learning networks for smallholder producers.",
+    description:
+      "Market linkage support and peer learning networks for smallholder producers.",
   },
   {
     id: "youth-networks",
     name: "Youth Employment Networks",
+    abbr: "YEN",
     type: "Civil Society",
-    description: "Skills fairs, mentorship matching, and workplace readiness workshops.",
+    description:
+      "Skills fairs, mentorship matching, and workplace readiness workshops.",
   },
 ];

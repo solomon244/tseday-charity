@@ -3,13 +3,6 @@
 import { ShieldCheck, BadgeCheck } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 
-const partners = [
-  { name: "UN Partner", short: "UN" },
-  { name: "Local NGO Coalition", short: "NGO" },
-  { name: "North Shewa Administration", short: "Gov" },
-  { name: "Community Health Network", short: "CHN" },
-];
-
 const testimonials = [
   {
     quote:
@@ -32,27 +25,11 @@ export function TrustSection() {
         <AnimatedSection>
           <div className="mb-12 text-center">
             <h2 className="font-heading text-3xl font-bold text-tsedey-navy dark:text-white md:text-4xl">
-              Trusted by Communities & Partners
+              Voices from Our Communities
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600 dark:text-gray-300">
-              We partner with communities, institutions, and supporters who believe every Ethiopian family deserves dignity and opportunity.
+              Beneficiaries and neighbors share how integrated support has changed daily life in North Shewa.
             </p>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection delay={0.1}>
-          <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {partners.map((partner) => (
-              <div
-                key={partner.name}
-                className="rounded-2xl border border-gray-200 bg-tsedey-light p-5 text-center shadow-soft dark:border-gray-700 dark:bg-gray-800"
-              >
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white text-sm font-bold text-tsedey-navy dark:bg-gray-700 dark:text-white">
-                  {partner.short}
-                </div>
-                <p className="mt-3 text-sm font-semibold text-gray-700 dark:text-gray-200">{partner.name}</p>
-              </div>
-            ))}
           </div>
         </AnimatedSection>
 

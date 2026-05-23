@@ -13,7 +13,8 @@ const focusAreas = [
   "Skills training",
   "Health & psychosocial services",
   "Agriculture initiatives",
-  "Peacebuilding",
+  "Gender protection",
+  "Peace building",
   "Employment facilitation",
 ];
 

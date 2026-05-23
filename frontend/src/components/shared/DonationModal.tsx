@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CreditCard, Heart, CheckCircle, ShieldCheck, BadgeCheck, ChevronDown, Smartphone, Landmark } from "lucide-react";
+import { FeedbackMessageCard } from "@/components/shared/FeedbackMessageCard";
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -26,6 +27,8 @@ const causes = [
   "Education & Training",
   "Water, Sanitation & Hygiene",
   "Livelihood Support",
+  "Gender Protection",
+  "Peace Building",
 ];
 
 const paymentMethods = [
@@ -130,16 +133,19 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               </div>
 
               {isComplete ? (
-                /* Success State */
-                <div className="p-8 text-center">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2">
-                    Thank You!
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-3">Your donation of {finalAmount} ETB has been received.</p>
-                  <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900/40 dark:bg-green-900/20 dark:text-green-300">
-                    Receipt sent by email. Thank you for supporting {cause}.
-                  </div>
+                <div className="p-8 sm:p-10">
+                  <FeedbackMessageCard
+                    variant="success"
+                    title="Thank you!"
+                    description={`Your ${frequency === "monthly" ? "monthly " : ""}gift of ${finalAmount} ETB has been recorded.`}
+                  >
+                    <div className="rounded-xl border border-green-200/80 bg-white/90 px-4 py-3 text-sm text-green-900 shadow-sm dark:border-green-800/50 dark:bg-gray-900/60 dark:text-green-100">
+                      <p className="font-medium">Supporting: {cause}</p>
+                      <p className="mt-1 text-green-800/80 dark:text-green-200/80">
+                        A receipt will be sent by email. Your generosity helps families in North Shewa.
+                      </p>
+                    </div>
+                  </FeedbackMessageCard>
                 </div>
               ) : (
                 /* Form */
@@ -274,9 +280,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                   </div>
 
                   {submitError ? (
-                    <p className="text-sm text-red-600 dark:text-red-400" role="alert">
-                      {submitError}
-                    </p>
+                    <FeedbackMessageCard variant="error" title="Could not complete donation" description={submitError} compact />
                   ) : null}
 
                   {/* Submit Button */}

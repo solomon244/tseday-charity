@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Calendar } from "lucide-react";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
-import { newsArticles } from "@/lib/content";
+import { fetchPublishedNews, fetchPublishedNewsBySlug } from "@/lib/fetchNews";
 import { getLang } from "@/lib/i18n";
 
 type PageProps = {
@@ -11,12 +11,13 @@ type PageProps = {
   searchParams?: { lang?: string };
 };
 
-export function generateStaticParams() {
-  return newsArticles.map((a) => ({ slug: a.slug }));
+export async function generateStaticParams() {
+  const articles = await fetchPublishedNews();
+  return articles.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const article = newsArticles.find((a) => a.slug === params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const article = await fetchPublishedNewsBySlug(params.slug);
   if (!article) return {};
   return {
     title: article.title,
@@ -25,8 +26,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function NewsArticlePage({ params, searchParams }: PageProps) {
-  const article = newsArticles.find((a) => a.slug === params.slug);
+export default async function NewsArticlePage({ params, searchParams }: PageProps) {
+  const article = await fetchPublishedNewsBySlug(params.slug);
   if (!article) notFound();
   const lang = getLang(searchParams?.lang);
   const isAm = lang === "am";

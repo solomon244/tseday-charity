@@ -1,6 +1,7 @@
 // src/app/page.tsx
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
+import { PartnersSection } from "@/components/sections/PartnersSection";
 import { TrustSection } from "@/components/sections/TrustSection";
 import { QuickStats } from "@/components/sections/QuickStats";
 import { ProgramHighlights } from "@/components/sections/ProgramHighlights";
@@ -19,8 +20,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-tsedey-light dark:bg-gray-950">
+    <main className="min-h-screen overflow-x-hidden bg-tsedey-light dark:bg-gray-950">
       <Hero />
+      <PartnersSection />
       <TrustSection />
       <QuickStats />
       <ProgramHighlights />

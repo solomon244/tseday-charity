@@ -73,6 +73,26 @@ export function heroCopy(lang: Lang) {
   };
 }
 
+export function partnersSectionCopy(lang: Lang) {
+  const isAm = lang === "am";
+  if (!isAm) {
+    return {
+      title: "Our Partners",
+      subtitle:
+        "We are promoting integrated humanitarian and development partnerships among communities, government institutions, and civil society across North Shewa and the Amhara Region.",
+      cta: "View all partners",
+      marqueeLead: "Collaborating for dignity, resilience, and sustainable self-reliance",
+    };
+  }
+  return {
+    title: "አጋሮቻችን",
+    subtitle:
+      "በሰሜን ሸዋ እና በአማራ ክልል ከመንግስት፣ ከጤና ተቋማት፣ ከማህበረሰቦች፣ ከኢንዱስትሪ እና ከሰብዓዊ አጋሮች ጋር ጠንካራ ማህበረሰቦችን እንገንባለን።",
+    cta: "ሁሉንም አጋሮች ይመልከቱ",
+    marqueeLead: "ለክብር፣ ለጥንካሬ እና ለዘላለም ራስ መተማመን በጋራ",
+  };
+}
+
 export function newsSectionCopy(lang: Lang) {
   const isAm = lang === "am";
   if (!isAm) {
@@ -103,7 +123,7 @@ export function getInvolvedCopy(lang: Lang) {
       actions: [
         {
           title: "Make a Donation",
-          desc: "Your donation delivers immediate food support, education essentials, and livelihood recovery for families in need.",
+          desc: "Support food aid, education, and livelihood recovery for families in need.",
           cta: "Donate Now",
         },
         {

@@ -4,5 +4,5 @@ export function getOptimizedImageSrc(src: string, width: number) {
     return src;
   }
 
-  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto,w_${width}${src}`;
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_90,w_${width}${src}`;
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Search } from "lucide-react";
+import { Download, Loader2, Search } from "lucide-react";
 import type { ContactMessage, ContactStatus } from "@/lib/adminTypes";
 import { AdminAlerts } from "./AdminAlerts";
 import { AdminPagination } from "./AdminPagination";
@@ -71,6 +71,30 @@ export function AdminContactsPanel() {
     setUpdating(null);
   }
 
+  function exportCsv() {
+    const header = "name,email,subject,type,status,submittedAt,message\n";
+    const body = rows
+      .map((r) =>
+        [
+          `"${r.name.replace(/"/g, '""')}"`,
+          `"${r.email}"`,
+          `"${r.subject.replace(/"/g, '""')}"`,
+          `"${r.type}"`,
+          `"${r.status}"`,
+          `"${r.submittedAt}"`,
+          `"${r.message.replace(/"/g, '""')}"`,
+        ].join(","),
+      )
+      .join("\n");
+    const blob = new Blob([header + body], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `contact-messages-page-${page}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="space-y-4">
       <AdminAlerts notice={notice} error={error} />
@@ -109,6 +133,17 @@ export function AdminContactsPanel() {
             ))}
           </select>
         </label>
+        <div className="flex items-end md:col-span-2 md:justify-end">
+          <button
+            type="button"
+            disabled={rows.length === 0}
+            onClick={exportCsv}
+            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-gray-700"
+          >
+            <Download className="h-4 w-4" />
+            Export page CSV
+          </button>
+        </div>
       </div>
 
       {loading ? (

@@ -3,6 +3,8 @@ import { ContactMessageModel } from "@/lib/db/models/ContactMessage";
 import { DonationModel } from "@/lib/db/models/Donation";
 import { NewsletterSubscriptionModel } from "@/lib/db/models/NewsletterSubscription";
 import { VolunteerApplicationModel } from "@/lib/db/models/VolunteerApplication";
+import { countImpactStories } from "@/lib/impactStoryStore";
+import { countNewsArticles } from "@/lib/newsStore";
 import { readApplications } from "@/lib/volunteerStore";
 
 export async function getAdminStats() {
@@ -18,12 +20,23 @@ export async function getAdminStats() {
       contacts: { total: 0, new: 0 },
       donations: { total: 0, recorded: 0, completed: 0, amountTotal: 0 },
       newsletter: { total: 0 },
+      news: { total: 0, published: 0 },
+      impactStories: { total: 0, published: 0 },
     };
   }
 
   await connectDB();
 
-  const [contactTotal, contactNew, donationStats, newsletterTotal] = await Promise.all([
+  const [
+    contactTotal,
+    contactNew,
+    donationStats,
+    newsletterTotal,
+    newsTotal,
+    newsPublished,
+    storiesTotal,
+    storiesPublished,
+  ] = await Promise.all([
     ContactMessageModel.countDocuments(),
     ContactMessageModel.countDocuments({ status: "new" }),
     DonationModel.aggregate<{ total: number; amount: number; recorded: number; completed: number }>([
@@ -38,6 +51,10 @@ export async function getAdminStats() {
       },
     ]),
     NewsletterSubscriptionModel.countDocuments(),
+    countNewsArticles(false),
+    countNewsArticles(true),
+    countImpactStories(false),
+    countImpactStories(true),
   ]);
 
   const d = donationStats[0] ?? { total: 0, amount: 0, recorded: 0, completed: 0 };
@@ -52,5 +69,7 @@ export async function getAdminStats() {
       amountTotal: d.amount,
     },
     newsletter: { total: newsletterTotal },
+    news: { total: newsTotal, published: newsPublished },
+    impactStories: { total: storiesTotal, published: storiesPublished },
   };
 }

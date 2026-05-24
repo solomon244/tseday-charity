@@ -57,6 +57,25 @@ const config: Config = {
         soft: "0 4px 20px rgba(15, 43, 76, 0.08)",
         glow: "0 0 30px rgba(59, 163, 212, 0.15)",
       },
+      backgroundColor: {
+        "theme-page": "var(--theme-page-bg)",
+        "theme-surface": "var(--theme-surface)",
+        "theme-muted": "var(--theme-muted)",
+      },
+      textColor: {
+        "theme-heading": "var(--theme-heading)",
+        "theme-body": "var(--theme-body)",
+        "theme-accent": "var(--theme-accent)",
+      },
+      borderColor: {
+        "theme-border": "var(--theme-border)",
+        "theme-accent": "var(--theme-accent)",
+      },
+      fill: {
+        "theme-page": "var(--theme-page-bg)",
+        "theme-surface": "var(--theme-surface)",
+        "theme-muted": "var(--theme-muted)",
+      },
     },
   },
   plugins: [],

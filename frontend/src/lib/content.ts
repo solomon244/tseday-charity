@@ -238,6 +238,7 @@ export interface Partner {
   type: string;
   description: string;
   logo?: string;
+  url?: string;
 }
 
 /** Major institutional partners (homepage slider + partners page). */
@@ -248,6 +249,7 @@ export const partners: Partner[] = [
     abbr: "MC",
     type: "Financial Services",
     logo: "/partners/mastercard.png",
+    url: "https://www.mastercard.com",
     description:
       "Supporting secure digital payments and financial inclusion initiatives that help communities access resources for humanitarian and development programs.",
   },

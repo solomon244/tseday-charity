@@ -1,4 +1,4 @@
-// src/components/sections/Hero.tsx — split layout: content + image showcase
+// src/components/sections/Hero.tsx — full-bleed image with overlaid content (mobile); split on desktop
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -71,13 +71,50 @@ export function Hero() {
 
   return (
     <section
-      className="relative mt-20 w-full overflow-hidden border-b border-gray-200 bg-tsedey-navy dark:border-gray-800"
+      className="relative mt-20 w-full overflow-hidden border-b border-gray-200 dark:border-gray-800"
       aria-roledescription="carousel"
       aria-label="Featured highlights"
     >
-      <div className="grid min-h-[min(100dvh-5rem,920px)] lg:grid-cols-2">
-        {/* —— Content panel (always readable) —— */}
-        <div className="relative z-10 flex flex-col justify-between bg-gradient-to-br from-tsedey-navy via-[#0b2f4f] to-[#0a3b43] px-5 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-14 xl:px-14">
+      <div className="relative min-h-[min(100dvh-5rem,920px)]">
+        {/* Full-bleed photo — mobile: entire hero; desktop: right half */}
+        <div className="absolute inset-0 lg:left-1/2">
+          {slides.map((s, i) => {
+            const active = i === index;
+            return (
+              <div
+                key={s.id}
+                className={`absolute inset-0 transition-opacity ease-out ${
+                  active ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
+                style={{ transitionDuration: `${SLIDE_TRANSITION_MS}ms` }}
+                aria-hidden={!active}
+              >
+                <Image
+                  src={getOptimizedImageSrc(s.image, 1920)}
+                  alt={active ? s.title : ""}
+                  fill
+                  priority={i === 0}
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={90}
+                />
+              </div>
+            );
+          })}
+          {/* Mobile: darken photo so text stays readable */}
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-tsedey-navy/70 via-tsedey-navy/35 to-tsedey-navy/65 lg:hidden"
+            aria-hidden
+          />
+          {/* Desktop: subtle edge blend on the photo side */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-tsedey-navy to-transparent lg:block"
+            aria-hidden
+          />
+        </div>
+
+        {/* Content overlaid on photo (mobile) / left panel (desktop) */}
+        <div className="relative z-10 flex min-h-[min(100dvh-5rem,920px)] flex-col justify-between bg-gradient-to-b from-tsedey-navy/95 via-tsedey-navy/75 to-tsedey-navy/45 px-5 py-10 backdrop-blur-[2px] sm:px-8 sm:py-12 lg:w-1/2 lg:bg-gradient-to-br lg:from-tsedey-navy lg:via-[#0b2f4f] lg:to-[#0a3b43] lg:px-10 lg:py-14 xl:px-14">
           <div>
             <motion.div
               initial={{ opacity: 0, y: -8 }}
@@ -105,10 +142,10 @@ export function Hero() {
                     <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-tsedey-cyan sm:text-sm">
                       {s.kicker}
                     </p>
-                    <h1 className="font-heading text-[clamp(1.65rem,4.2vw,2.85rem)] font-extrabold leading-[1.12] tracking-tight text-white text-balance">
+                    <h1 className="text-balance font-heading text-[clamp(1.65rem,4.2vw,2.85rem)] font-extrabold leading-[1.12] tracking-tight text-white">
                       {s.title}
                     </h1>
-                    <p className="mt-4 max-w-lg text-base leading-relaxed text-gray-300 text-pretty sm:text-lg">
+                    <p className="mt-4 max-w-lg text-pretty text-base leading-relaxed text-gray-300 sm:text-lg">
                       {s.subtitle}
                     </p>
                   </div>
@@ -120,7 +157,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="mt-5 inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-200"
+              className="mt-5 inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-gray-200 backdrop-blur-sm"
             >
               <span className="font-bold text-tsedey-orange">{t.etbLineBold}</span>
               {t.etbLineSuffix}
@@ -149,7 +186,6 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Stats + trust */}
           <div className="mt-10 space-y-6">
             <div className="grid grid-cols-3 gap-3 border-t border-white/15 pt-6">
               <div>
@@ -169,13 +205,37 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Carousel controls */}
+            {/* Slide progress */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="truncate text-xs font-semibold text-white/90 sm:text-sm">{slide.kicker}</p>
+                <span className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold tabular-nums text-white backdrop-blur-sm">
+                  {index + 1}/{slides.length}
+                </span>
+              </div>
+              <div className="h-1 overflow-hidden rounded-full bg-white/15">
+                <div
+                  key={`progress-${index}-${paused}`}
+                  className="h-full w-full origin-left rounded-full bg-gradient-to-r from-tsedey-cyan to-tsedey-orange"
+                  style={
+                    paused
+                      ? { transform: "scaleX(1)" }
+                      : {
+                          animation: reduceMotion
+                            ? "none"
+                            : `hero-slide-progress ${AUTOPLAY_MS}ms linear forwards`,
+                        }
+                  }
+                />
+              </div>
+            </div>
+
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => go(-1)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   aria-label="Previous slide"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -183,7 +243,7 @@ export function Hero() {
                 <button
                   type="button"
                   onClick={() => setPaused((p) => !p)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   aria-label={paused ? "Play slideshow" : "Pause slideshow"}
                 >
                   {paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
@@ -191,7 +251,7 @@ export function Hero() {
                 <button
                   type="button"
                   onClick={() => go(1)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   aria-label="Next slide"
                 >
                   <ChevronRight className="h-5 w-5" />
@@ -208,7 +268,7 @@ export function Hero() {
                     type="button"
                     role="tab"
                     aria-selected={i === index}
-                    aria-label={`${s.kicker}`}
+                    aria-label={s.kicker}
                     onClick={() => goTo(i)}
                     className="group relative flex h-8 w-8 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                   >
@@ -223,74 +283,8 @@ export function Hero() {
             </div>
           </div>
         </div>
-
-        {/* —— Image panel —— */}
-        <div className="relative min-h-[44vh] overflow-hidden bg-[#061525] sm:min-h-[50vh] lg:min-h-full">
-          {slides.map((s, i) => {
-            const active = i === index;
-            if (!active) return null;
-            return (
-              <div key={s.id} className="absolute inset-0 z-[1]">
-                <Image
-                  src={getOptimizedImageSrc(s.image, 1920)}
-                  alt={s.title}
-                  fill
-                  priority={i === 0}
-                  className="object-cover object-center"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={90}
-                />
-              </div>
-            );
-          })}
-
-          {/* Slide label + progress */}
-          <div className="absolute bottom-0 left-0 right-0 z-[3] p-4 sm:p-5 lg:p-6">
-            <div className="flex items-end justify-between gap-3">
-              <p className="max-w-[70%] truncate rounded-lg bg-black/70 px-3 py-1.5 text-xs font-semibold text-white sm:text-sm">
-                {slide.kicker}
-              </p>
-              <span className="shrink-0 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold tabular-nums text-white">
-                {index + 1}/{slides.length}
-              </span>
-            </div>
-            <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/15">
-              <div
-                key={`progress-${index}-${paused}`}
-                className="h-full w-full origin-left rounded-full bg-gradient-to-r from-tsedey-cyan to-tsedey-orange"
-                style={
-                  paused
-                    ? { transform: "scaleX(1)" }
-                    : {
-                        animation: reduceMotion
-                          ? "none"
-                          : `hero-slide-progress ${AUTOPLAY_MS}ms linear forwards`,
-                      }
-                }
-              />
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            className="absolute left-3 top-1/2 z-[4] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white shadow-lg transition hover:bg-black/80 sm:left-4"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            className="absolute right-3 top-1/2 z-[4] flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white shadow-lg transition hover:bg-black/80 sm:right-4"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
       </div>
 
-      {/* Scroll cue */}
       <button
         type="button"
         onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}

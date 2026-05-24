@@ -19,7 +19,10 @@ export default function AdminPage() {
   return (
     <Suspense
       fallback={
-        <div className="py-16 text-center text-sm text-gray-600 dark:text-gray-300">Loading admin...</div>
+        <div className="admin-surface flex items-center justify-center gap-3 rounded-2xl border py-16 shadow-soft">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--admin-accent)] border-t-transparent" />
+          <span className="text-sm text-gray-600 dark:text-gray-300">Loading dashboard…</span>
+        </div>
       }
     >
       <AdminConsole />

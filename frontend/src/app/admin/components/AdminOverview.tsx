@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import type { AdminRecentActivity, AdminStats, AdminTab } from "@/lib/adminTypes";
+import { AdminCard } from "./AdminCard";
 import { adminJson, formatCurrency, formatLabel, formatSubmitted } from "./adminUtils";
 
 type AdminOverviewProps = {
@@ -38,8 +39,8 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
       router.refresh();
       return;
     }
-    if (statsRes.err || !statsRes.data) {
-      setError(statsRes.err ?? "Could not load overview.");
+    if (statsRes.error || !statsRes.data) {
+      setError(statsRes.error ?? "Could not load overview.");
       setStats(null);
     } else {
       setStats(statsRes.data);
@@ -54,18 +55,18 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 rounded-2xl border border-gray-100 bg-white p-8 text-gray-600 shadow-soft dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
-        <Loader2 className="h-5 w-5 animate-spin" />
-        Loading overview...
-      </div>
+      <AdminCard className="flex items-center gap-3 text-gray-600 dark:text-gray-300" padding="lg">
+        <Loader2 className="h-5 w-5 animate-spin text-[var(--admin-accent)]" />
+        Loading overview…
+      </AdminCard>
     );
   }
 
   if (error || !stats) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
+      <AdminCard className="border-red-200 bg-red-50 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
         {error ?? "Overview unavailable."}
-      </div>
+      </AdminCard>
     );
   }
 
@@ -150,7 +151,7 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
   return (
     <div className="space-y-6">
       {alerts.length > 0 ? (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900/50 dark:bg-amber-950/30">
+        <AdminCard className="border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-950/30" padding="md">
           <div className="mb-3 flex items-center gap-2 text-amber-900 dark:text-amber-100">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <h2 className="text-sm font-semibold uppercase tracking-wide">Needs attention</h2>
@@ -169,7 +170,7 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
               </li>
             ))}
           </ul>
-        </div>
+        </AdminCard>
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -178,7 +179,7 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
             key={c.label}
             type="button"
             onClick={() => onNavigate(c.tab)}
-            className="rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-soft transition hover:-translate-y-0.5 hover:border-tsedey-cyan/40 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+            className="admin-surface rounded-2xl border p-5 text-left shadow-soft transition hover:-translate-y-0.5 hover:border-[var(--admin-accent)]/40 hover:shadow-md"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -196,7 +197,7 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
       (recent.contacts.length > 0 || recent.donations.length > 0 || recent.volunteers.length > 0) ? (
         <div className="grid gap-4 lg:grid-cols-3">
           {recent.contacts.length > 0 ? (
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-soft dark:border-gray-800 dark:bg-gray-900">
+            <AdminCard padding="md">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">New messages</h2>
                 <button
@@ -217,11 +218,11 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </AdminCard>
           ) : null}
 
           {recent.volunteers.length > 0 ? (
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-soft dark:border-gray-800 dark:bg-gray-900">
+            <AdminCard padding="md">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Latest volunteers</h2>
                 <button
@@ -242,11 +243,11 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </AdminCard>
           ) : null}
 
           {recent.donations.length > 0 ? (
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-soft dark:border-gray-800 dark:bg-gray-900">
+            <AdminCard padding="md">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Latest donations</h2>
                 <button
@@ -269,13 +270,13 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </AdminCard>
           ) : null}
         </div>
       ) : null}
 
       {stats.volunteers.total > 0 ? (
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-soft dark:border-gray-800 dark:bg-gray-900">
+        <AdminCard padding="md">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">Volunteers by status</h2>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {Object.entries(stats.volunteers.byStatus).map(([status, count]) => (
@@ -288,7 +289,7 @@ export function AdminOverview({ onNavigate }: AdminOverviewProps) {
               </li>
             ))}
           </ul>
-        </div>
+        </AdminCard>
       ) : null}
     </div>
   );

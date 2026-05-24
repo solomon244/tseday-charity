@@ -77,7 +77,8 @@ export default function PartnersPage({
             {partners.map((p) => (
               <article
                 key={p.id}
-                className="rounded-2xl border border-gray-100 bg-white p-6 shadow-soft dark:border-gray-800 dark:bg-gray-900"
+                id={p.id}
+                className="scroll-mt-28 rounded-2xl border border-gray-100 bg-white p-6 shadow-soft dark:border-gray-800 dark:bg-gray-900"
               >
                 <div className="flex items-start gap-4">
                   {p.logo ? (

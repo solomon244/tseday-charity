@@ -16,7 +16,7 @@ export function AdminPagination({
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white px-4 py-3 text-sm shadow-soft dark:border-gray-800 dark:bg-gray-900 sm:flex-row sm:items-center sm:justify-between">
+    <div className="admin-surface flex flex-col gap-3 rounded-2xl border px-4 py-3 text-sm shadow-soft sm:flex-row sm:items-center sm:justify-between">
       <p className="text-gray-600 dark:text-gray-300">
         Showing {total === 0 ? 0 : Math.min((page - 1) * pageSize + 1, total)}-
         {Math.min(page * pageSize, total)} of {total}

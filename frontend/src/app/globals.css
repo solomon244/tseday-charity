@@ -3,8 +3,32 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --theme-page-bg: #f0f7fc;
+    --theme-surface: #ffffff;
+    --theme-muted: #e6f0fa;
+    --theme-heading: #0f2b4c;
+    --theme-body: #4b5563;
+    --theme-accent: #1e56a0;
+    --theme-accent-soft: #3ba3d4;
+    --theme-border: rgba(15, 43, 76, 0.12);
+  }
+
+  html.dark {
+    --theme-page-bg: #030712;
+    --theme-surface: #111827;
+    --theme-muted: #1f2937;
+    --theme-heading: #f9fafb;
+    --theme-body: #9ca3af;
+    --theme-accent: #3ba3d4;
+    --theme-accent-soft: #1e56a0;
+    --theme-border: rgba(255, 255, 255, 0.08);
+  }
+
   body {
-    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased;
+    background-color: var(--theme-page-bg);
+    color: var(--theme-body);
+    @apply font-sans antialiased;
   }
   html {
     scroll-behavior: smooth;
@@ -72,4 +96,63 @@
 :where(a, button, input, select, textarea, summary, [role="button"], [tabindex]):focus-visible {
   outline: 2px solid #1B6B3A;
   outline-offset: 2px;
+}
+
+/* Admin dashboard themes */
+.admin-dashboard {
+  --admin-accent: #1e56a0;
+  --admin-accent-soft: #3ba3d4;
+  --admin-sidebar-from: #0f2b4c;
+  --admin-sidebar-to: #0a1d33;
+  --admin-page-bg: #f0f7fc;
+  --admin-surface-bg: #ffffff;
+  --admin-surface-border: rgba(15, 43, 76, 0.1);
+}
+
+.admin-dashboard[data-admin-accent="ocean"] {
+  --admin-accent: #0d9488;
+  --admin-accent-soft: #5eead4;
+  --admin-sidebar-from: #134e4a;
+  --admin-sidebar-to: #0f3d3a;
+}
+
+.admin-dashboard[data-admin-accent="slate"] {
+  --admin-accent: #475569;
+  --admin-accent-soft: #94a3b8;
+  --admin-sidebar-from: #1e293b;
+  --admin-sidebar-to: #0f172a;
+}
+
+.dark .admin-dashboard {
+  --admin-page-bg: #030712;
+  --admin-surface-bg: #111827;
+  --admin-surface-border: rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar {
+  background: linear-gradient(165deg, var(--admin-sidebar-from) 0%, var(--admin-sidebar-to) 100%);
+}
+
+.admin-surface {
+  background-color: var(--admin-surface-bg);
+  border-color: var(--admin-surface-border);
+}
+
+.admin-toolbar-btn {
+  @apply rounded-xl border border-gray-200 bg-white text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800;
+}
+
+@keyframes admin-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-content {
+  animation: admin-fade-in 0.25s ease-out;
 }

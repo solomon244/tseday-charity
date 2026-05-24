@@ -19,6 +19,8 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
 
   if (!mounted) return null;
 
+  const isDark = theme === "dark";
+
   const overlay =
     variant === "overlay"
       ? "border border-white/25 bg-white/15 text-white hover:bg-white/25 shadow-sm backdrop-blur-sm"
@@ -33,17 +35,13 @@ export function ThemeToggle({ variant = "default" }: ThemeToggleProps) {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`p-2 rounded-lg transition-colors ${overlay || solid}`}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className={`rounded-lg p-2 transition-colors ${overlay || solid}`}
       aria-label="Toggle dark mode"
-      aria-pressed={theme === "dark"}
-      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDark}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {theme === "dark" ? (
-        <Sun className="w-5 h-5" />
-      ) : (
-        <Moon className="w-5 h-5" />
-      )}
+      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </motion.button>
   );
 }

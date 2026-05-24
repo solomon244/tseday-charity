@@ -62,7 +62,7 @@ export function PartnersSection() {
   const visible = partners.slice(start, start + perView);
 
   return (
-    <section className="border-y border-gray-200 bg-white py-14 dark:border-gray-800 dark:bg-gray-900 md:py-16">
+    <section className="border-y border-theme-border bg-theme-surface py-14 md:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection>
           <div className="text-center">
@@ -110,7 +110,7 @@ export function PartnersSection() {
                 style={{ gridTemplateColumns: `repeat(${perView}, minmax(0, 1fr))` }}
               >
                 {visible.map((p) => (
-                  <PartnerLogoCard key={p.id} partner={p} className="h-[150px]" />
+                  <PartnerLogoCard key={p.id} partner={p} className="h-[150px]" hoverReveal />
                 ))}
               </motion.div>
             </AnimatePresence>

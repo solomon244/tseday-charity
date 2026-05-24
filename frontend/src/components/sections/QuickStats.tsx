@@ -61,21 +61,21 @@ export function QuickStats() {
   };
 
   return (
-    <section ref={sectionRef} className="py-12 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+    <section ref={sectionRef} className="border-b border-theme-border bg-theme-muted py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <AnimatedSection key={index} delay={index * 0.1}>
-              <div className="h-full rounded-2xl bg-tsedey-light p-6 text-center transition-all hover:-translate-y-1 hover:shadow-soft dark:bg-gray-800/50">
+              <div className="h-full rounded-2xl bg-theme-surface p-6 text-center transition-all hover:-translate-y-1 hover:shadow-soft">
                 <stat.icon className={`mx-auto mb-3 h-8 w-8 ${stat.iconClass}`} />
-                <div className="text-2xl font-bold text-tsedey-navy dark:text-white md:text-3xl">
+                <div className="text-2xl font-bold text-theme-heading md:text-3xl">
                   <CountUp
                     target={parseStatValue(stat.value).numericValue}
                     suffix={parseStatValue(stat.value).suffix}
                     isVisible={isVisible}
                   />
                 </div>
-                <div className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                <div className="mt-2 text-sm leading-relaxed text-theme-body">
                   {stat.label}
                 </div>
               </div>
